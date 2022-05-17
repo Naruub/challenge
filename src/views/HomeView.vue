@@ -1,18 +1,37 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js + TypeScript App" />
+    <CardView
+      v-for="(card, index) of cardData"
+      :key="index"
+      :card-id="card.id"
+      :card-description="card.description"
+    ></CardView>
   </div>
 </template>
 
 <script lang="ts">
 import { defineComponent } from "vue";
-import HelloWorld from "@/components/HelloWorld.vue"; // @ is an alias to /src
+import { cards } from "@/data/cards";
+import CardView from "@/components/Card.vue";
 
 export default defineComponent({
   name: "HomeView",
   components: {
-    HelloWorld,
+    CardView,
   },
+  data() {
+    return {
+      helloDkb: "hello dkb",
+      cardData: cards,
+    };
+  },
+  methods: {},
 });
 </script>
+<style lang="scss">
+.home {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+</style>
