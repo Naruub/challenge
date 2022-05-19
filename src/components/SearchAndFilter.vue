@@ -32,6 +32,11 @@ import { transactions } from "@/data/transactions";
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
+/*
+ * I've installed a npm package (vue-loading-overlay)
+ * with a loading spinner and tried to simulate api calls with
+ * simply activate and deactivate the loading spinner in setTimeout().
+ * */
 export default {
   name: "SearchAndFilter",
   props: {
