@@ -95,6 +95,7 @@ export default {
       border-radius: 5px;
       min-width: 200px;
       width: 500px;
+      border-color: #148dea;
     }
   }
   .transaction_list {
