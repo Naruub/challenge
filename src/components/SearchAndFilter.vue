@@ -2,7 +2,8 @@
   <div class="wrapper">
     <div class="filter">
       Amount Filter
-      <input v-model="amountFilter" type="number" />
+      <input v-model="state.amountFilter" type="number" />
+      {{ state.amountFilter }}
     </div>
     <loading
       v-model:active="isLoading"
@@ -11,7 +12,7 @@
       :is-full-page="false"
     >
     </loading>
-    <div class="transaction_list" v-if="items">
+    <div class="transaction_list" v-if="state.items">
       <div
         class="item"
         v-for="item in filteredItems"
@@ -27,58 +28,74 @@
   </div>
 </template>
 
-<script>
+<script setup lang="ts">
+import { reactive, computed, defineProps, watch, ref } from "vue";
+import { ITransaction } from "@/interfaces/ITransaction";
 import { transactions } from "@/data/transactions";
+
 import Loading from "vue-loading-overlay";
 import "vue-loading-overlay/dist/vue-loading.css";
 
+const props = defineProps({
+  itemId: String,
+});
+
+const itemId = ref("");
+
+const state = reactive({
+  amountFilter: "",
+  items: [] as Array<ITransaction>,
+  isLoading: false,
+});
+
+const filteredItems = computed(() => {
+  console.log(props.itemId);
+  return "";
+  /*return state.items[props.itemId].filter(
+    (x) => x.amount >= state.amountFilter
+  );*/
+});
+
+watch(itemId, () => {
+  state.amountFilter = "";
+  state.isLoading = true;
+  setTimeout(() => {
+    state.items = transactions;
+    state.isLoading = false;
+  }, 2500);
+});
 /*
- * I've installed a npm package (vue-loading-overlay)
- * with a loading spinner and tried to simulate api calls with
- * simply activate and deactivate the loading spinner in setTimeout().
- * */
-export default {
-  name: "SearchAndFilter",
+name: "SearchAndFilter",
   props: {
-    itemId: String,
+  itemId: String,
     itemBackground: String,
+},
+components: { Loading },
+computed: {
+  filteredItems(): any[] {
+
   },
-  components: { Loading },
-  computed: {
-    filteredItems() {
-      return this.items[this.itemId]?.filter(
-        (x) => x.amount >= this.amountFilter
-      );
-    },
+},
+watch: {
+  itemId() {
+
   },
-  watch: {
-    itemId() {
-      this.amountFilter = "";
-      this.isLoading = true;
-      setTimeout(() => {
-        this.items = transactions;
-        this.isLoading = false;
-      }, 2500);
-    },
-  },
-  created() {
-    this.isLoading = true;
-    setTimeout(() => {
-      this.isLoading = false;
-    }, 5000);
-  },
-  data() {
-    return {
-      amountFilter: "",
-      items: [],
-      isLoading: false,
-    };
-  },
-  methods: {
-    onCancel() {
-      console.log("cancelled loader.");
-    },
-  },
+},
+created() {
+  this.isLoading = true;
+  setTimeout(() => {
+    this.isLoading = false;
+  }, 5000);
+},
+data() {
+  return {
+    amountFilter: "" as string,
+    items: [] as Array<ITransaction>,
+    isLoading: false,
+  };
+}*/
+const onCancel = () => {
+  console.log("cancelled loader.");
 };
 </script>
 
